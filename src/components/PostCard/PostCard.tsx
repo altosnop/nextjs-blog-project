@@ -1,28 +1,39 @@
 import Link from 'next/link';
-import styles from './styles.module.css';
 import Image from 'next/image';
+import formattedDate from '@/lib/formattedDate';
+import styles from './styles.module.css';
 
-const PostCard = () => {
+interface PostCard {
+  id: string;
+  userId: string;
+  title: string;
+  description: string;
+  slug: string;
+  img: string;
+  createdAt: string;
+}
+
+interface PostCardProps {
+  post: PostCard;
+}
+
+const PostCard = ({ post }: PostCardProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.top}>
-        <div className={styles.imgContainer}>
-          <Image
-            src="https://images.pexels.com/photos/7292733/pexels-photo-7292733.jpeg"
-            alt="Post"
-            fill
-            className={styles.img}
-          />
-        </div>
-        <span className={styles.date}>date</span>
+        {post.img && (
+          <div className={styles.imgContainer}>
+            <Image src={post.img} alt="Post" fill className={styles.img} />
+          </div>
+        )}
+        <span className={styles.date}>
+          {formattedDate(post.createdAt.toString())}
+        </span>
       </div>
       <div className={styles.bottom}>
-        <h1 className={styles.title}>title</h1>
-        <p className={styles.desc}>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae,
-          quaerat!
-        </p>
-        <Link className={styles.link} href={`/blog/1`}>
+        <h1 className={styles.title}>{post.title}</h1>
+        <p className={styles.desc}>{post.description}</p>
+        <Link className={styles.link} href={`/blog/${post.slug}`}>
           READ MORE
         </Link>
       </div>
